@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { connect } from 'react-redux';
 
 class Route extends React.Component {
   constructor(props) {
@@ -27,4 +28,8 @@ class Route extends React.Component {
   }
 };
 
-export default Route;
+const mapStateToProps = (state) => ({
+  routes: state.routes
+});
+
+export default connect(mapStateToProps)(Route);

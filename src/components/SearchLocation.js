@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { render } from 'react-dom';
 import { connect } from 'react-redux';
-import { setOnHide } from '../actions/actions'
+import { setOnHide, setRoutes } from '../actions/actions'
 import HTTPMaps from '../services/HTTPMaps';
 
 class SearchLocation extends React.Component {
@@ -19,6 +19,7 @@ class SearchLocation extends React.Component {
     HTTPMaps.findLocations(this.refs.origin.value,this.refs.destination.value).then((response) => {
       console.log(response.data.routes);
       this.props.dispatch(setOnHide(false))
+      this.props.dispatch(setRoutes(response.data.routes));
     }).catch(e => {
       console.log(e);
     });
