@@ -39,6 +39,7 @@ class Route extends React.Component {
   }
 };
 
+// Mapeia e atribui os estados da store
 const mapStateToProps = (state) => ({
   routes: state.routes
 });

@@ -13,9 +13,11 @@ class SearchLocation extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    HTTPMaps.findLocations(this.refs.origin.value,this.refs.destination.value).then((response) => {
+    HTTPMaps.findLocations(this.refs.origin.value.toLowerCase(),this.refs.destination.value.toLowerCase()).then((response) => {
       //
-      this.props.dispatch(setRoutes(response.data.routes));
+      if (response.data.status === "OK") {
+        this.props.dispatch(setRoutes(response.data.routes));
+      }
     }).catch(e => {
       console.log(e);
     });
