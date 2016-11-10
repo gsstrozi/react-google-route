@@ -6,10 +6,7 @@ import HTTPMaps from '../services/HTTPMaps';
 
 class SearchLocation extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = {
-      onHide:true
-    };
+    super(props)
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -17,8 +14,7 @@ class SearchLocation extends React.Component {
     event.preventDefault();
 
     HTTPMaps.findLocations(this.refs.origin.value,this.refs.destination.value).then((response) => {
-      console.log(response.data.routes);
-      this.props.dispatch(setOnHide(false))
+      //
       this.props.dispatch(setRoutes(response.data.routes));
     }).catch(e => {
       console.log(e);

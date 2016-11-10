@@ -8,17 +8,28 @@ class Route extends React.Component {
   }
 
   render() {
-    const routesMap = this.props.routes ? this.props.routes.map((route, index) => {
+    const routesMap = this.props.routes.map((route, index) => {
+      const legsMap = route.legs.map((leg, i) => {
+        return (
+          <div key={index} className="row">
+            <div className="col-sm-6">
+              <div className="pull-right">
+                <img src={'../img/time.png'}/>
+                <h6> {leg.duration.text.replace(/[\.-]/g, "").toUpperCase()} </h6>
+              </div>
+            </div>
 
-      return (
-        <div key={index} className="row">
-        <div className="col-sm-4">
-        <img img src={'../img/time.png'}/>
-        <h4> 1 </h4>
-        </div>
-        </div>
-      );
-    }) : null ;
+            <div className="col-sm-6">
+              <div className="pull-left">
+                <img src={'../img/distance.png'} />
+                <h6> {leg.distance.text.replace(/[\.-]/g, "").toUpperCase()} </h6>
+              </div>
+            </div>
+          </div>
+        );
+      });
+      return legsMap;
+    });
 
     return (
       <div className="container">
