@@ -31,6 +31,16 @@ class SearchLocation extends React.Component {
           <br/>
           <input type="text" ref="destination" className="form-control" placeholder="Destino"/>
           <br/>
+          <div className="row">
+            <div className="col-sm-2">
+              <input type="text" ref="destination" className="form-control" placeholder="R$ / Litro"/>
+            </div>
+            <div className="col-sm-2">
+              <input type="text" ref="destination" className="form-control" placeholder="KM / Litro"/>
+            </div>
+          </div>
+          <br/>
+          <br/>
           <button type="submit" className="btn btn-default">Buscar</button>
         </div>
       </form>
