@@ -9,15 +9,20 @@ class Route extends React.Component {
   }
 
   totalAmount (km, fuel, liters) {
-    console.log(km);
-    console.log(fuel);
-    console.log(liters);
+    if (fuel == 0 || liters == 0) {
+      return 0;
+    }
     return ((km / liters) * fuel).toFixed(2);
   }
 
   render() {
+    console.log(this.props.searching);
+    if (this.props.searching) {
+      return null;
+    }
     const routesMap = this.props.routes.map((route, index) => {
       const legsMap = route.legs.map((leg, i) => {
+        var totAmount = this.totalAmount(parseFloat(leg.distance.text), this.props.fuelamt, this.props.km);
         return (
           <div key={index} className="row">
             <div className="col-sm-6">
@@ -33,10 +38,15 @@ class Route extends React.Component {
                 <h6> {leg.distance.text.replace(/[\.-]/g, "").toUpperCase()} </h6>
               </div>
             </div>
-            <div className="text-center">
+
+            {totAmount > 0 ? (
+              <div className="text-center">
                 <img src={'../img/money.png'} />
-                <h6> R$ {this.totalAmount(parseFloat(leg.distance.text), this.props.fuelamt, this.props.km)} </h6>
-            </div>
+                <h6> R$ {totAmount} </h6>
+              </div>
+            ) : (
+              null
+            )}
           </div>
         );
       });
@@ -54,6 +64,7 @@ class Route extends React.Component {
 // Map and Set State of Store
 const mapStateToProps = (state) => ({
   routes: state.routes,
+  searching: state.searching,
   km: state.km,
   fuelamt: state.fuelamt,
 });

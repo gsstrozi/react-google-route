@@ -18,7 +18,7 @@ class SearchLocation extends React.Component {
       //
       if (response.data.status === "OK") {
         this.props.dispatch(setRoutes(response.data.routes));
-        this.props.dispatch(setSearching(false));
+        setTimeout(() => this.props.dispatch(setSearching(false)),2000);
         this.props.dispatch(setKM(this.refs.km.value));
         this.props.dispatch(setFuelAmt(this.refs.fuelamt.value));
       }
