@@ -5,6 +5,14 @@ import { connect } from 'react-redux';
 class Route extends React.Component {
   constructor(props) {
     super(props);
+    this.totalAmount = this.totalAmount.bind(this);
+  }
+
+  totalAmount (km, fuel, liters) {
+    console.log(km);
+    console.log(fuel);
+    console.log(liters);
+    return ((km / liters) * fuel).toFixed(2);
   }
 
   render() {
@@ -25,6 +33,10 @@ class Route extends React.Component {
                 <h6> {leg.distance.text.replace(/[\.-]/g, "").toUpperCase()} </h6>
               </div>
             </div>
+            <div className="text-center">
+                <img src={'../img/money.png'} />
+                <h6> R$ {this.totalAmount(parseFloat(leg.distance.text), this.props.fuelamt, this.props.km)} </h6>
+            </div>
           </div>
         );
       });
@@ -39,9 +51,11 @@ class Route extends React.Component {
   }
 };
 
-// Mapeia e atribui os estados da store
+// Map and Set State of Store
 const mapStateToProps = (state) => ({
-  routes: state.routes
+  routes: state.routes,
+  km: state.km,
+  fuelamt: state.fuelamt,
 });
 
 export default connect(mapStateToProps)(Route);

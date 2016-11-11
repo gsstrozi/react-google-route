@@ -1,11 +1,21 @@
-import {HIDE_ROUTE} from '../constants/constants';
-
-export const setOnHide = (onHide) => ({
-  type: HIDE_ROUTE,
-  onHide
-})
+import {SET_ROUTES, SET_SEARCHING, SET_KM, SET_FUELAMT} from '../constants/constants';
 
 export const setRoutes = (routes) => ({
-  type: 'SET_ROUTES',
+  type: SET_ROUTES,
   routes,
+})
+
+export const setSearching = (searching) => ({
+  type: SET_SEARCHING,
+  searching,
+})
+
+export const setKM = (km) => ({
+  type: SET_KM,
+  km,
+})
+
+export const setFuelAmt = (fuelamt) => ({
+  type: SET_FUELAMT,
+  fuelamt,
 })
