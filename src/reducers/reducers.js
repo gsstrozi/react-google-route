@@ -1,4 +1,4 @@
-import {SET_ROUTES, SET_SEARCHING, SET_KM, SET_FUELAMT} from '../constants/constants';
+import {SET_ROUTES, SET_SEARCHING, SET_KM, SET_FUELAMT, SET_REQUESTERROR} from '../constants/constants';
 
 const Reducer = (state = {
   searching: false,
@@ -24,6 +24,11 @@ const Reducer = (state = {
       return {
         ...state,
         fuelamt: action.fuelamt
+      }
+    case SET_REQUESTERROR:
+      return {
+        ...state,
+        requesterror: action.requesterror
       }
     default:
       return state

@@ -1,4 +1,4 @@
-import {SET_ROUTES, SET_SEARCHING, SET_KM, SET_FUELAMT} from '../constants/constants';
+import {SET_ROUTES, SET_SEARCHING, SET_KM, SET_FUELAMT, SET_REQUESTERROR} from '../constants/constants';
 
 export const setRoutes = (routes) => ({
   type: SET_ROUTES,
@@ -18,4 +18,9 @@ export const setKM = (km) => ({
 export const setFuelAmt = (fuelamt) => ({
   type: SET_FUELAMT,
   fuelamt,
+})
+
+export const setRequestError = (requesterror) => ({
+  type: SET_REQUESTERROR,
+  requesterror
 })

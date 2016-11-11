@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { render } from 'react-dom';
 import { connect } from 'react-redux';
-import { setRoutes, setSearching, setKM, setFuelAmt } from '../actions/actions';
+import { setRoutes, setSearching, setKM, setFuelAmt, setRequestError } from '../actions/actions';
 import HTTPMaps from '../services/HTTPMaps';
 
 class SearchLocation extends React.Component {
@@ -23,7 +23,8 @@ class SearchLocation extends React.Component {
         this.props.dispatch(setFuelAmt(this.refs.fuelamt.value));
       }
     }).catch(e => {
-      this.props.dispatch(setSearching(false));
+      setTimeout(() => this.props.dispatch(setSearching(false)),1000);
+      this.props.dispatch(setRequestError(true));
       console.log(e);
     });
   }
@@ -66,7 +67,8 @@ class SearchLocation extends React.Component {
 SearchLocation.defaultProps = {
     routes: [],
     km:0,
-    fuelamt:0
+    fuelamt:0,
+    requesterror:false
 };
 
 // Map and Set State of Store

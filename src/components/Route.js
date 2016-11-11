@@ -16,8 +16,11 @@ class Route extends React.Component {
   }
 
   render() {
+    console.log("S");
     console.log(this.props.searching);
-    if (this.props.searching) {
+    console.log("R");
+    console.log(this.props.requesterror);
+    if (this.props.searching || this.props.requesterror) {
       return null;
     }
     const routesMap = this.props.routes.map((route, index) => {
@@ -67,6 +70,7 @@ const mapStateToProps = (state) => ({
   searching: state.searching,
   km: state.km,
   fuelamt: state.fuelamt,
+  requesterror:state.requesterror
 });
 
 export default connect(mapStateToProps)(Route);
