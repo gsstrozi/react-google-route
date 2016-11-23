@@ -3,11 +3,14 @@ import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { setRoutes, setSearching, setKM, setFuelAmt, setRequestError } from '../actions/actions';
 import HTTPMaps from '../services/HTTPMaps';
+import Geosuggest from 'react-geosuggest';
 
 class SearchLocation extends React.Component {
   constructor(props) {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSelectSuggest = this.handleSelectSuggest.bind(this);
+
   }
 
   handleSubmit(event) {
@@ -17,6 +20,7 @@ class SearchLocation extends React.Component {
     HTTPMaps.findLocations(this.refs.origin.value.toLowerCase(),this.refs.destination.value.toLowerCase()).then((response) => {
       //
       if (response.data.status === "OK") {
+        this.props.dispatch(setRequestError(false));
         this.props.dispatch(setRoutes(response.data.routes));
         setTimeout(() => this.props.dispatch(setSearching(false)),2000);
         this.props.dispatch(setKM(this.refs.km.value));
@@ -29,6 +33,11 @@ class SearchLocation extends React.Component {
     });
   }
 
+  handleSelectSuggest (suggestName, coordinate) {
+    console.log(suggestName);
+    console.log(coordinate);
+ }
+
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
@@ -38,6 +47,10 @@ class SearchLocation extends React.Component {
           <input type="text" ref="destination" className="form-control" placeholder="Destino"/>
           <br/>
           <div className="row">
+          <Geosuggest
+                    placeholder="Start typing!"
+                    initialValue="Hamburg"
+                    radius="20" />
             <div className="col-sm-2">
               <div className="input-group">
                 <span className="input-group-addon">
@@ -75,6 +88,7 @@ SearchLocation.defaultProps = {
 const mapStateToProps = (state) => ({
   routes: state.routes,
   searching: state.searching,
+  requesterror:state.requesterror
 });
 
 const Search = connect(mapStateToProps)(SearchLocation)

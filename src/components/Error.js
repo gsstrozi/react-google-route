@@ -24,6 +24,8 @@ class Error extends React.Component {
   }
 
   render() {
+    console.log("UHEUHEHUE");
+    console.log(this.props.requesterror);
     if (!this.props.requesterror || this.props.searching) {
       return null;
     }
