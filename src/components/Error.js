@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 class Error extends React.Component {
   constructor(props) {
     super(props);
-
     this.setErrorMessage = this.setErrorMessage.bind(this);
   }
 
@@ -24,8 +23,6 @@ class Error extends React.Component {
   }
 
   render() {
-    console.log("UHEUHEHUE");
-    console.log(this.props.requesterror);
     if (!this.props.requesterror || this.props.searching) {
       return null;
     }

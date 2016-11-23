@@ -1,4 +1,11 @@
-import {SET_ROUTES, SET_SEARCHING, SET_KM, SET_FUELAMT, SET_REQUESTERROR} from '../constants/constants';
+import {
+  SET_ROUTES,
+  SET_SEARCHING,
+  SET_KM,
+  SET_FUELAMT,
+  SET_REQUESTERROR,
+  SET_VALUE,
+  SET_SUGGESTIONS} from '../constants/constants';
 
 const Reducer = (state = {
   searching: false,
@@ -29,6 +36,19 @@ const Reducer = (state = {
       return {
         ...state,
         requesterror: action.requesterror
+      }
+    case SET_VALUE:
+    console.log("AQUI - VALUE");
+
+      return {
+        ...state,
+        value: action.value
+      }
+    case SET_SUGGESTIONS:
+    console.log("AQUI - SUGG");
+      return {
+        ...state,
+        suggestions: action.suggestions
       }
     default:
       return state

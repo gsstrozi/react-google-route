@@ -16,10 +16,6 @@ class Route extends React.Component {
   }
 
   render() {
-    console.log("S");
-    console.log(this.props.searching);
-    console.log("R");
-    console.log(this.props.requesterror);
     if (this.props.searching || this.props.requesterror) {
       return null;
     }

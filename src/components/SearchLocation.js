@@ -3,21 +3,19 @@ import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { setRoutes, setSearching, setKM, setFuelAmt, setRequestError } from '../actions/actions';
 import HTTPMaps from '../services/HTTPMaps';
-import Geosuggest from 'react-geosuggest';
+import RouteInput from '../components/RouteInput';
 
 class SearchLocation extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSelectSuggest = this.handleSelectSuggest.bind(this);
-
   }
 
   handleSubmit(event) {
     event.preventDefault();
     this.props.dispatch(setSearching(true));
 
-    HTTPMaps.findLocations(this.refs.origin.value.toLowerCase(),this.refs.destination.value.toLowerCase()).then((response) => {
+    HTTPMaps.getDirection(this.refs.origin.value.toLowerCase(),this.refs.destination.value.toLowerCase()).then((response) => {
       //
       if (response.data.status === "OK") {
         this.props.dispatch(setRequestError(false));
@@ -33,24 +31,15 @@ class SearchLocation extends React.Component {
     });
   }
 
-  handleSelectSuggest (suggestName, coordinate) {
-    console.log(suggestName);
-    console.log(coordinate);
- }
-
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
-          <input type="text" ref="origin" className="form-control" placeholder="Ponto de Partida"/>
+          <RouteInput />
           <br/>
-          <input type="text" ref="destination" className="form-control" placeholder="Destino"/>
+          <RouteInput />
           <br/>
           <div className="row">
-          <Geosuggest
-                    placeholder="Start typing!"
-                    initialValue="Hamburg"
-                    radius="20" />
             <div className="col-sm-2">
               <div className="input-group">
                 <span className="input-group-addon">
@@ -64,7 +53,7 @@ class SearchLocation extends React.Component {
                 <span className="input-group-addon">
                   <img src={'../img/drop.png'} />
                   </span>
-                <input type="text" ref="km" className="form-control" placeholder="KM / Litro" aria-describedby="basic-addon1"/>
+                <input type="text" ref="km" className="form-control" placeholder="KM / Litro" />
               </div>
             </div>
           </div>
