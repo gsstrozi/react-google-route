@@ -25,7 +25,7 @@ class Route extends React.Component {
         return (
           <div key={index} className="row">
             <div className="col-sm-3">
-              <div className="pull-right">
+              <div className="text-center">
                 <img src={'./img/time.png'}/>
                 <h6> {leg.duration.text.replace(/[\.-]/g, "").toUpperCase()} </h6>
               </div>
@@ -41,13 +41,12 @@ class Route extends React.Component {
               null
             )}
             <div className="col-sm-3">
-              <div className="pull-left">
+              <div className="text-center">
                 <img src={'./img/distance.png'} />
                 <h6> {leg.distance.text.replace(/[\.-]/g, "").toUpperCase()} </h6>
               </div>
             </div>
-
-          </div>
+        </div>
         );
       });
       return legsMap;

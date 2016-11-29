@@ -15,8 +15,8 @@ class SearchLocation extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.dispatch(setSearching(true));
-
-    HTTPMaps.getDirection(this.props.placeSelected.toLowerCase(),this.props.placeSelected_To.toLowerCase()).then((response) => {
+    console.log("AQ");
+    HTTPMaps.getDirection(this.props.placeSelected,this.props.placeSelected_To).then((response) => {
       //
       if (response.data.status === "OK") {
         this.props.dispatch(setRequestError(false));

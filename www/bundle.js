@@ -21687,8 +21687,8 @@
 
 	      event.preventDefault();
 	      this.props.dispatch((0, _actions.setSearching)(true));
-
-	      _HTTPMaps2.default.getDirection(this.props.placeSelected.toLowerCase(), this.props.placeSelected_To.toLowerCase()).then(function (response) {
+	      console.log("AQ");
+	      _HTTPMaps2.default.getDirection(this.props.placeSelected, this.props.placeSelected_To).then(function (response) {
 	        //
 	        if (response.data.status === "OK") {
 	          _this2.props.dispatch((0, _actions.setRequestError)(false));
@@ -23659,7 +23659,8 @@
 
 	var HTTPMaps = {
 	  getDirection: function getDirection(origin, destination) {
-	    return _axios2.default.get(HOST_DIRECTIONS + "?origin=" + origin + "&destination=" + destination + "&key=" + API_KEY);
+	    console.log("Sending Request to " + HOST_DIRECTIONS + "?origin=place_id:" + origin + "&destination=place_id:" + destination + "&key=" + API_KEY);
+	    return _axios2.default.get(HOST_DIRECTIONS + "?origin=place_id:" + origin + "&destination=place_id:" + destination + "&key=" + API_KEY);
 	  },
 	  getPlaces: function getPlaces(input) {
 	    console.log("Sending Request to " + HOST_PLACES + "?input=" + input + "&key=" + API_KEY);
@@ -23684,6 +23685,7 @@
 	var utils = __webpack_require__(216);
 	var bind = __webpack_require__(217);
 	var Axios = __webpack_require__(218);
+	var defaults = __webpack_require__(219);
 
 	/**
 	 * Create an instance of Axios
@@ -23705,14 +23707,14 @@
 	}
 
 	// Create the default instance to be exported
-	var axios = createInstance();
+	var axios = createInstance(defaults);
 
 	// Expose Axios class to allow class inheritance
 	axios.Axios = Axios;
 
 	// Factory for creating new instances
-	axios.create = function create(defaultConfig) {
-	  return createInstance(defaultConfig);
+	axios.create = function create(instanceConfig) {
+	  return createInstance(utils.merge(defaults, instanceConfig));
 	};
 
 	// Expose Cancel & CancelToken
@@ -24070,10 +24072,10 @@
 	/**
 	 * Create a new instance of Axios
 	 *
-	 * @param {Object} defaultConfig The default config for the instance
+	 * @param {Object} instanceConfig The default config for the instance
 	 */
-	function Axios(defaultConfig) {
-	  this.defaults = utils.merge(defaults, defaultConfig);
+	function Axios(instanceConfig) {
+	  this.defaults = instanceConfig;
 	  this.interceptors = {
 	    request: new InterceptorManager(),
 	    response: new InterceptorManager()
@@ -24177,7 +24179,7 @@
 	  return adapter;
 	}
 
-	module.exports = {
+	var defaults = {
 	  adapter: getDefaultAdapter(),
 
 	  transformRequest: [function transformRequest(data, headers) {
@@ -24215,15 +24217,6 @@
 	    return data;
 	  }],
 
-	  headers: {
-	    common: {
-	      'Accept': 'application/json, text/plain, */*'
-	    },
-	    patch: utils.merge(DEFAULT_CONTENT_TYPE),
-	    post: utils.merge(DEFAULT_CONTENT_TYPE),
-	    put: utils.merge(DEFAULT_CONTENT_TYPE)
-	  },
-
 	  timeout: 0,
 
 	  xsrfCookieName: 'XSRF-TOKEN',
@@ -24235,6 +24228,22 @@
 	    return status >= 200 && status < 300;
 	  }
 	};
+
+	defaults.headers = {
+	  common: {
+	    'Accept': 'application/json, text/plain, */*'
+	  }
+	};
+
+	utils.forEach(['delete', 'get', 'head'], function forEachMehtodNoData(method) {
+	  defaults.headers[method] = {};
+	});
+
+	utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+	  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+	});
+
+	module.exports = defaults;
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
@@ -24268,7 +24277,7 @@
 	var parseHeaders = __webpack_require__(226);
 	var isURLSameOrigin = __webpack_require__(227);
 	var createError = __webpack_require__(223);
-	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(228);
+	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(228);
 
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -25174,6 +25183,10 @@
 
 	var _reactSelect2 = _interopRequireDefault(_reactSelect);
 
+	var _HTTPMaps = __webpack_require__(213);
+
+	var _HTTPMaps2 = _interopRequireDefault(_HTTPMaps);
+
 	var _actions = __webpack_require__(211);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -25184,6 +25197,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var suggestionOptions = { options: [] };
+
 	var PlaceFrom = function (_React$Component) {
 	  _inherits(PlaceFrom, _React$Component);
 
@@ -25193,10 +25208,8 @@
 	    var _this = _possibleConstructorReturn(this, (PlaceFrom.__proto__ || Object.getPrototypeOf(PlaceFrom)).call(this, props));
 
 	    _this.onChange = _this.onChange.bind(_this);
-	    /* START - MOCK PLACES */
-	    _this.props.dispatch((0, _actions.setPlaceOptions)([{ value: 'leme', label: 'Leme - SP' }, { value: 'araras', label: 'Araras - SP' }]));
-	    _this.props.dispatch((0, _actions.setPlaceSelected)("leme"));
-	    /* END - MOCK PLACES */
+	    _this.onInputChange = _this.onInputChange.bind(_this);
+	    _this.onPopuleOptions = _this.onPopuleOptions.bind(_this);
 
 	    _this.state = {
 	      placeSelected: _this.props.placeSelected,
@@ -25208,25 +25221,52 @@
 	  _createClass(PlaceFrom, [{
 	    key: 'onChange',
 	    value: function onChange(value) {
-	      this.props.dispatch((0, _actions.setPlaceSelected)(value == null ? '' : value.value));
+	      if (value == null) {
+	        this.props.dispatch((0, _actions.setPlaceOptions)([]));
+	        this.props.dispatch((0, _actions.setPlaceSelected)(''));
+	      } else {
+	        this.props.dispatch((0, _actions.setPlaceSelected)(value.value));
+	      }
+	    }
+	  }, {
+	    key: 'onInputChange',
+	    value: function onInputChange(value) {
+	      var _this2 = this;
+
+	      suggestionOptions.options = [];
+	      _HTTPMaps2.default.getPlaces(value.toLowerCase()).then(function (response) {
+	        response.data.predictions.map(function (predication, index) {
+	          _this2.onPopuleOptions(predication);
+	        });
+	        setTimeout(function () {
+	          return _this2.props.dispatch((0, _actions.setPlaceOptions)(suggestionOptions.options));
+	        }, 1000);
+	      }).catch(function (e) {
+	        console.log("Ops ! " + e);
+	      });
+	    }
+	  }, {
+	    key: 'onPopuleOptions',
+	    value: function onPopuleOptions(prediction) {
+	      var jsonData = {};
+
+	      jsonData["value"] = prediction.place_id;
+	      jsonData["label"] = prediction.description;
+
+	      suggestionOptions.options.push(jsonData);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      /*
-	      const data = [
-	        { value: 'leme', label: 'Leme - SP' },
-	        { value: 'araras', label: 'Araras - SP' }
-	      ];
-	      */
 	      return _react2.default.createElement(_reactSelect2.default, {
 	        name: 'placeInputFrom'
 	        //isLoading = {true}
 	        , value: this.props.placeSelected,
 	        options: this.props.placeOptions,
 	        onChange: this.onChange,
+	        onInputChange: this.onInputChange,
 	        placeholder: 'Origem',
-	        ref: 'origin'
+	        ref: 'origem'
 
 	      });
 	    }
@@ -27581,6 +27621,10 @@
 
 	var _reactSelect2 = _interopRequireDefault(_reactSelect);
 
+	var _HTTPMaps = __webpack_require__(213);
+
+	var _HTTPMaps2 = _interopRequireDefault(_HTTPMaps);
+
 	var _actions = __webpack_require__(211);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -27591,6 +27635,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var suggestionOptions = { options: [] };
+
 	var PlaceTo = function (_React$Component) {
 	  _inherits(PlaceTo, _React$Component);
 
@@ -27600,10 +27646,8 @@
 	    var _this = _possibleConstructorReturn(this, (PlaceTo.__proto__ || Object.getPrototypeOf(PlaceTo)).call(this, props));
 
 	    _this.onChange = _this.onChange.bind(_this);
-	    /* START - MOCK PLACES */
-	    _this.props.dispatch((0, _actions.setPlaceOptions_To)([{ value: 'leme', label: 'Leme - SP' }, { value: 'araras', label: 'Araras - SP' }]));
-	    _this.props.dispatch((0, _actions.setPlaceSelected_To)("araras"));
-	    /* END - MOCK PLACES */
+	    _this.onInputChange = _this.onInputChange.bind(_this);
+	    _this.onPopuleOptions = _this.onPopuleOptions.bind(_this);
 
 	    _this.state = {
 	      placeSelected_To: _this.props.placeSelected_To,
@@ -27615,25 +27659,52 @@
 	  _createClass(PlaceTo, [{
 	    key: 'onChange',
 	    value: function onChange(value) {
-	      this.props.dispatch((0, _actions.setPlaceSelected_To)(value == null ? '' : value.value));
+	      if (value == null) {
+	        this.props.dispatch((0, _actions.setPlaceOptions_To)([]));
+	        this.props.dispatch((0, _actions.setPlaceSelected_To)(''));
+	      } else {
+	        this.props.dispatch((0, _actions.setPlaceSelected_To)(value.value));
+	      }
+	    }
+	  }, {
+	    key: 'onInputChange',
+	    value: function onInputChange(value) {
+	      var _this2 = this;
+
+	      suggestionOptions.options = [];
+	      _HTTPMaps2.default.getPlaces(value.toLowerCase()).then(function (response) {
+	        response.data.predictions.map(function (predication, index) {
+	          _this2.onPopuleOptions(predication);
+	        });
+	        setTimeout(function () {
+	          return _this2.props.dispatch((0, _actions.setPlaceOptions_To)(suggestionOptions.options));
+	        }, 1000);
+	      }).catch(function (e) {
+	        console.log("Ops ! " + e);
+	      });
+	    }
+	  }, {
+	    key: 'onPopuleOptions',
+	    value: function onPopuleOptions(prediction) {
+	      var jsonData = {};
+
+	      jsonData["value"] = prediction.place_id;
+	      jsonData["label"] = prediction.description;
+
+	      suggestionOptions.options.push(jsonData);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      /*
-	      const data = [
-	        { value: 'leme', label: 'Leme - SP' },
-	        { value: 'araras', label: 'Araras - SP' }
-	      ];
-	      */
 	      return _react2.default.createElement(_reactSelect2.default, {
 	        name: 'placeInputTo'
 	        //isLoading = {true}
 	        , value: this.props.placeSelected_To,
 	        options: this.props.placeOptions_To,
 	        onChange: this.onChange,
+	        onInputChange: this.onInputChange,
 	        placeholder: 'Destino',
-	        ref: 'destination'
+	        ref: 'destino'
 
 	      });
 	    }
@@ -27883,7 +27954,7 @@
 	              { className: 'col-sm-3' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'pull-right' },
+	                { className: 'text-center' },
 	                _react2.default.createElement('img', { src: './img/time.png' }),
 	                _react2.default.createElement(
 	                  'h6',
@@ -27915,7 +27986,7 @@
 	              { className: 'col-sm-3' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'pull-left' },
+	                { className: 'text-center' },
 	                _react2.default.createElement('img', { src: './img/distance.png' }),
 	                _react2.default.createElement(
 	                  'h6',
