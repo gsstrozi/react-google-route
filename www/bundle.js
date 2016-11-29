@@ -21614,7 +21614,7 @@
 	          _react2.default.createElement(
 	            'p',
 	            { className: 'navbar' },
-	            ' Buscar Rotas '
+	            ' Calcular Rotas '
 	          )
 	        )
 	      );

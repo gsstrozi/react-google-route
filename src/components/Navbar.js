@@ -10,7 +10,7 @@ class NavBar extends React.Component {
     return (
         <nav className="navbar navbar-default">
           <a className="navbar-brand" >
-            <p className="navbar"> Buscar Rotas </p>
+            <p className="navbar"> Calcular Rotas </p>
           </a>
         </nav>
     );

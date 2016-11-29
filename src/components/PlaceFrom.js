@@ -61,6 +61,9 @@ class PlaceFrom extends React.Component {
         onChange={this.onChange}
         onInputChange={this.onInputChange}
         placeholder="Origem"
+        noResultsText="Não há Resultados"
+        clearAllText="Remover Todos"
+  			clearValueText="Remover"
         ref="origem"
 
       />

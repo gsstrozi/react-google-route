@@ -61,6 +61,9 @@ class PlaceTo extends React.Component {
         onChange={this.onChange}
         onInputChange={this.onInputChange}
         placeholder="Destino"
+        noResultsText="Não há Resultados"
+        clearAllText="Remover Todos"
+  			clearValueText="Remover"
         ref="destino"
 
       />
