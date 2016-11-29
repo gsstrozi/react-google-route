@@ -1373,7 +1373,7 @@ a.text-danger:focus {
 }
 .bg-primary {
   color: #fff;
-  background-color: #337ab7;
+  background-color: #dbdde0;
 }
 a.bg-primary:hover,
 a.bg-primary:focus {
@@ -3569,7 +3569,8 @@ tbody.collapse.in {
 .dropdown-menu > .active > a:focus {
   color: #fff;
   text-decoration: none;
-  background-color: #337ab7;
+  /*background-color: #f5f5f5;*/
+  background-color: #fff;
   outline: 0;
 }
 .dropdown-menu > .disabled > a,

@@ -4,8 +4,10 @@ import {
   SET_KM,
   SET_FUELAMT,
   SET_REQUESTERROR,
-  SET_VALUE,
-  SET_SUGGESTIONS
+  SET_PLACE,
+  SET_PLACE_OPTIONS,
+  SET_PLACE_TO,
+  SET_PLACE_OPTIONS_TO
 } from '../constants/constants';
 
 export const setRoutes = (routes) => ({
@@ -33,12 +35,22 @@ export const setRequestError = (requesterror) => ({
   requesterror
 })
 
-export const setValue = (value) => ({
-  type: SET_VALUE,
-  value
+export const setPlaceSelected = (placeSelected) => ({
+  type: SET_PLACE,
+  placeSelected
 })
 
-export const setSuggestions = (suggestions) => ({
-  type: SET_SUGGESTIONS,
-  suggestions
+export const setPlaceOptions = (placeOptions) => ({
+  type: SET_PLACE_OPTIONS,
+  placeOptions
+})
+
+export const setPlaceSelected_To = (placeSelected_To) => ({
+  type: SET_PLACE_TO,
+  placeSelected_To
+})
+
+export const setPlaceOptions_To = (placeOptions_To) => ({
+  type: SET_PLACE_OPTIONS_TO,
+  placeOptions_To
 })

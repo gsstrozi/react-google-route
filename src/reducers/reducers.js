@@ -4,12 +4,16 @@ import {
   SET_KM,
   SET_FUELAMT,
   SET_REQUESTERROR,
-  SET_VALUE,
-  SET_SUGGESTIONS} from '../constants/constants';
+  SET_PLACE,
+  SET_PLACE_OPTIONS,
+  SET_PLACE_TO,
+  SET_PLACE_OPTIONS_TO
+ } from '../constants/constants';
 
 const Reducer = (state = {
   searching: false,
   routes: [],
+  placeSelected:""
 }, action) => {
   switch (action.type) {
     case SET_ROUTES:
@@ -37,19 +41,22 @@ const Reducer = (state = {
         ...state,
         requesterror: action.requesterror
       }
-    case SET_VALUE:
-    console.log("AQUI - VALUE");
-
+    case SET_PLACE:
       return {
-        ...state,
-        value: action.value
+        ...state, placeSelected: action.placeSelected
       }
-    case SET_SUGGESTIONS:
-    console.log("AQUI - SUGG");
+    case SET_PLACE_OPTIONS:
+        return {
+          ...state, placeOptions: action.placeOptions
+        }
+    case SET_PLACE_TO:
       return {
-        ...state,
-        suggestions: action.suggestions
+        ...state, placeSelected_To: action.placeSelected_To
       }
+    case SET_PLACE_OPTIONS_TO:
+        return {
+          ...state, placeOptions_To: action.placeOptions_To
+        }
     default:
       return state
   }

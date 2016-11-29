@@ -3,7 +3,8 @@ import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { setRoutes, setSearching, setKM, setFuelAmt, setRequestError } from '../actions/actions';
 import HTTPMaps from '../services/HTTPMaps';
-import RouteInput from '../components/RouteInput';
+import PlaceFrom from '../components/PlaceFrom';
+import PlaceTo from '../components/PlaceTo';
 
 class SearchLocation extends React.Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class SearchLocation extends React.Component {
     event.preventDefault();
     this.props.dispatch(setSearching(true));
 
-    HTTPMaps.getDirection(this.refs.origin.value.toLowerCase(),this.refs.destination.value.toLowerCase()).then((response) => {
+    HTTPMaps.getDirection(this.props.placeSelected.toLowerCase(),this.props.placeSelected_To.toLowerCase()).then((response) => {
       //
       if (response.data.status === "OK") {
         this.props.dispatch(setRequestError(false));
@@ -35,23 +36,26 @@ class SearchLocation extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
-          <RouteInput />
+          <PlaceFrom/>
           <br/>
-          <RouteInput />
+          <PlaceTo/>
           <br/>
           <div className="row">
+          <br/>
             <div className="col-sm-2">
               <div className="input-group">
                 <span className="input-group-addon">
-                  <img src={'../img/fuel.png'} />
+                  <img src={'./img/fuel.png'} />
                   </span>
                 <input type="text" ref="fuelamt" className="form-control" placeholder="R$ / Litro" aria-describedby="basic-addon1"/>
               </div>
             </div>
+            <br/>
+            <br/>
             <div className="col-sm-2">
               <div className="input-group">
                 <span className="input-group-addon">
-                  <img src={'../img/drop.png'} />
+                  <img src={'./img/drop.png'} />
                   </span>
                 <input type="text" ref="km" className="form-control" placeholder="KM / Litro" />
               </div>
@@ -77,7 +81,9 @@ SearchLocation.defaultProps = {
 const mapStateToProps = (state) => ({
   routes: state.routes,
   searching: state.searching,
-  requesterror:state.requesterror
+  requesterror:state.requesterror,
+  placeSelected_To: state.placeSelected_To,
+  placeSelected: state.placeSelected,
 });
 
 const Search = connect(mapStateToProps)(SearchLocation)

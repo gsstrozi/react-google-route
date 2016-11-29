@@ -10,7 +10,7 @@ class Loading extends React.Component {
   render() {
     const loading = this.props.searching ?
     <div className="text-center">
-        <img src={'../img/loading.gif'} />
+        <img src={'./img/loading.gif'} />
     </div>
     : null;
     return (

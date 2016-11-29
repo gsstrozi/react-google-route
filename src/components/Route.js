@@ -24,28 +24,29 @@ class Route extends React.Component {
         var totAmount = this.totalAmount(parseFloat(leg.distance.text), this.props.fuelamt, this.props.km);
         return (
           <div key={index} className="row">
-            <div className="col-sm-6">
+            <div className="col-sm-3">
               <div className="pull-right">
-                <img src={'../img/time.png'}/>
+                <img src={'./img/time.png'}/>
                 <h6> {leg.duration.text.replace(/[\.-]/g, "").toUpperCase()} </h6>
               </div>
             </div>
-
-            <div className="col-sm-6">
-              <div className="pull-left">
-                <img src={'../img/distance.png'} />
-                <h6> {leg.distance.text.replace(/[\.-]/g, "").toUpperCase()} </h6>
-              </div>
-            </div>
-
             {totAmount > 0 ? (
-              <div className="text-center">
-                <img src={'../img/money.png'} />
-                <h6> R$ {totAmount} </h6>
+              <div className="col-sm-3">
+                <div className="text-center">
+                  <img src={'./img/money.png'} />
+                  <h6> R$ {totAmount} </h6>
+                </div>
               </div>
             ) : (
               null
             )}
+            <div className="col-sm-3">
+              <div className="pull-left">
+                <img src={'./img/distance.png'} />
+                <h6> {leg.distance.text.replace(/[\.-]/g, "").toUpperCase()} </h6>
+              </div>
+            </div>
+
           </div>
         );
       });
